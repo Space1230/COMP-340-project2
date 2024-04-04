@@ -42,14 +42,32 @@ void pickup_chopsticks(int number) {
 
 //helper function for pickup_chopsticks and return_chopsticks
 void test(int number) {
-    if (state[number] == HUNGRY && // want to compete
-        state[(number + NUMBER - 1) % NUMBER] != EATING && // LEFT
-        state[(number + 1) % NUMBER] != EATING) { // RIGHT
+    bool eat = false;
+    bool lock_middle = false;
+    //pthread_mutex_lock(&mutex_middle); 
 
-        state[number] = EATING; // phi[i] can eat
-        printf("%d: eating\n", number);
-        sem_post(&sem_vars[number]); // wake up phi[i] if it is blocked
+    if (pthread_mutex_trylock(&mutex_middle) == 0) { // try this for now to solve error
+        lock_middle = true;
     }
+
+    // do a check if the philosopher can eat with both adjacent 
+    //chopsticks or one adjacent and the middle one
+    if (((state[(number + NUMBER - 1) % NUMBER] != EATING) && 
+    (state[(number + 1) % NUMBER] != EATING)) || // if this passes then adjacent chopsticks are available
+        (lock_middle && ((state[(number + NUMBER - 1) % NUMBER] != EATING) || 
+        (state[(number + 1) % NUMBER] != EATING)))) { // otherwise middle chopstick is locked and one adjacent is available
+        eat = true;
+    }
+
+
+    // if (state[number] == HUNGRY && // want to compete
+    //     state[(number + NUMBER - 1) % NUMBER] != EATING && // LEFT
+    //     state[(number + 1) % NUMBER] != EATING) { // RIGHT
+
+    //     state[number] = EATING; // phi[i] can eat
+    //     printf("%d: eating\n", number);
+    //     sem_post(&sem_vars[number]); // wake up phi[i] if it is blocked
+    // }
 }
 
 //function for the philosopher to return the chopsticks
