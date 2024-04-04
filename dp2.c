@@ -1,6 +1,7 @@
 #include "dp.h"
 #include <stdio.h> // for debuging
 #include <ctype.h>
+#include <stdbool.h>
 
 //function for getting a random number from the list
 int get_next_number() {
