@@ -87,7 +87,8 @@ void return_chopsticks(int number) {
     printf("%d: thinking\n", number);
     test((number + NUMBER - 1) % NUMBER); // test LEFT
     test((number + 1) % NUMBER); // test RIGHT
-    sem_post(&sem_vars[number]);
+    //sem_post(&sem_vars[number]);
+    pthread_mutex_unlock(&mutex_lock);
 }
 
 int main(int argc, char* argv[]) {
