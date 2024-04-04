@@ -59,6 +59,15 @@ void test(int number) {
         eat = true;
     }
 
+    if (eat && state[number] == HUNGRY) {
+        state[number] = EATING;
+        sem_post(&sem_vars[number]); // wake up phi[i] if it is blocked
+    }
+
+    if (!eat && lock_middle) {
+        pthread_mutex_unlock(&mutex_middle);
+    }
+
 
     // if (state[number] == HUNGRY && // want to compete
     //     state[(number + NUMBER - 1) % NUMBER] != EATING && // LEFT
