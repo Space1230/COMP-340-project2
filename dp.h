@@ -38,8 +38,14 @@ pthread_mutex_t 	mutex_lock;
 //function that simulates the philosopher operation
 void *philosopher(void *param);
 
+//function for the philosopher to think
+void think(int number);
+
 //function for the philosopher to pickup the chopsticks
 void pickup_chopsticks(int number);
+
+//helper function for pickup_chopsticks and return_chopsticks
+void test(int number);
 
 //function for the philosopher to return the chopsticks
 void return_chopsticks(int number);
