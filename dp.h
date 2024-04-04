@@ -49,3 +49,8 @@ void test(int number);
 
 //function for the philosopher to return the chopsticks
 void return_chopsticks(int number);
+
+
+
+// Added for part 2
+pthread_mutex_t mutex_middle; // Middle chopstick mutex
