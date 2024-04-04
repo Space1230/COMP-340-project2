@@ -24,13 +24,17 @@ void *philosopher(void *param) {
 //function for the philosopher to think
 void think(int number) {
     state[number] = THINKING;
-    sleep(get_next_number());
+    int wait_time = get_next_number();
+    printf("%d: thinking for %d seconds\n", number, wait_time);
+    sleep(wait_time);
 }
 
 //function for the philosopher to pickup the chopsticks
 void pickup_chopsticks(int number) {
+    printf("%d: pickup chopsticks\n", number);
     pthread_mutex_lock(&mutex_lock);
     state[number] = HUNGRY;
+    printf("%d: hungry\n", number);
     test(number);
     pthread_mutex_unlock(&mutex_lock);
     sem_wait(&sem_vars[number]);
@@ -43,14 +47,17 @@ void test(int number) {
         state[(number + 1) % NUMBER] != EATING) { // RIGHT
 
         state[number] = EATING; // phi[i] can eat
+        printf("%d: eating\n", number);
         sem_post(&sem_vars[number]); // wake up phi[i] if it is blocked
     }
 }
 
 //function for the philosopher to return the chopsticks
 void return_chopsticks(int number) {
+    printf("%d: putdown chopsticks\n", number);
     pthread_mutex_lock(&mutex_lock);
     state[number] = THINKING;
+    printf("%d: thinking\n", number);
     test((number + NUMBER - 1) % NUMBER); // test LEFT
     test((number + 1) % NUMBER); // test RIGHT
     sem_post(&sem_vars[number]);
@@ -81,7 +88,7 @@ int main(int argc, char* argv[]) {
 
     while ((input = fgetc(random_num_file)) != EOF) {
         if (!isblank(input) && rand_position < MAX_LENGTH){
-            rand_numbers[rand_position++] = input;
+            rand_numbers[rand_position++] = input - '0';
         }
     }
 
@@ -89,7 +96,7 @@ int main(int argc, char* argv[]) {
 
     // testing
     /* for (int i = 0; i < MAX_LENGTH; i++) { */
-    /*     printf("%c ", rand_numbers[i]); */
+    /*     printf("%i ", rand_numbers[i]); */
     /* } */
     /* printf("\n"); */
 
@@ -98,6 +105,7 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&mutex_lock, NULL);
     for (int i = 0; i < NUMBER; i++) {
         sem_init(&sem_vars[i], 0, 0);
+        printf("thinking\n");
         state[i] = THINKING;
     }
 
