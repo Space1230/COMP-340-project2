@@ -9,6 +9,7 @@ int get_next_number() {
         exit(EXIT_FAILURE);
     }
     return rand_numbers[rand_position++];
+
 }
 
 //function that simulates the philosopher operation
@@ -17,6 +18,8 @@ void *philosopher(void *param) {
     while (1) {
         think(philosopher_number);
         pickup_chopsticks(philosopher_number);
+        eat(philosopher_number);
+        return_chopsticks(philosopher_number);
     }
     return NULL;
 }
@@ -47,9 +50,15 @@ void test(int number) {
         state[(number + 1) % NUMBER] != EATING) { // RIGHT
 
         state[number] = EATING; // phi[i] can eat
-        printf("%d: eating\n", number);
         sem_post(&sem_vars[number]); // wake up phi[i] if it is blocked
     }
+}
+
+//function for the philosopher to eat
+void eat(int number) {
+    int eating_time = get_next_number();
+    printf("%d: eating for %d seconds\n", number, eating_time);
+    sleep(eating_time);
 }
 
 //function for the philosopher to return the chopsticks
@@ -57,10 +66,9 @@ void return_chopsticks(int number) {
     printf("%d: putdown chopsticks\n", number);
     pthread_mutex_lock(&mutex_lock);
     state[number] = THINKING;
-    printf("%d: thinking\n", number);
     test((number + NUMBER - 1) % NUMBER); // test LEFT
     test((number + 1) % NUMBER); // test RIGHT
-    sem_post(&sem_vars[number]);
+    pthread_mutex_unlock(&mutex_lock);
 }
 
 int main(int argc, char* argv[]) {

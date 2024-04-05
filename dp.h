@@ -47,6 +47,9 @@ void pickup_chopsticks(int number);
 //helper function for pickup_chopsticks and return_chopsticks
 void test(int number);
 
+//function for the philosopher to eat
+void eat(int number);
+
 //function for the philosopher to return the chopsticks
 void return_chopsticks(int number);
 
