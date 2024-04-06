@@ -18,6 +18,9 @@ void *philosopher(void *param) {
     while (1) {
         think(philosopher_number);
         pickup_chopsticks(philosopher_number);
+        eat(philosopher_number);
+        return_chopsticks(philosopher_number);
+
     }
     return NULL;
 }
@@ -78,6 +81,12 @@ void test(int number) {
     //     printf("%d: eating\n", number);
     //     sem_post(&sem_vars[number]); // wake up phi[i] if it is blocked
     // }
+}
+//function for the philosopher to eat
+void eat(int number) {
+    int eating_time = get_next_number();
+    printf("%d: eating for %d seconds\n", number, eating_time);
+    sleep(eating_time);
 }
 
 //function for the philosopher to return the chopsticks
