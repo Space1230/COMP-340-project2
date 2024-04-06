@@ -61,4 +61,6 @@ pthread_mutex_t mutex_middle; // Middle chopstick mutex
 
 struct timeval time_before[NUMBER], time_after[NUMBER];
 double waitTime[NUMBER];
+double max[NUMBER] = {0};
+double sum[NUMBER] = {0};
 

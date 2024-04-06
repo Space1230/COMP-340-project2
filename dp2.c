@@ -92,6 +92,10 @@ void eat(int number) {
     waitTime[number] = 
     (double)(time_after[number].tv_usec - time_before[number].tv_usec) / 1000 +
     (double)(time_after[number].tv_sec - time_before[number].tv_sec) * 1000;
+    sum[number] += waitTime;
+    if (waitTime > max[number]) {
+        max[number] = waitTime;
+    }
     printf("%d: waited for %f milliseconds\n", number, waitTime[number]);
     sleep(eating_time);
 }
@@ -166,4 +170,14 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < NUMBER; i++) {
         pthread_join(philosophers[i], NULL);
     }
+
+    double overall_sum = 0, overall_max = 0;
+    for (int i = 0; i < NUMBER; i++) {
+        overall_sum += sum[i];
+        if (max[i] > overall_max) overall_max = max[i];
+    }
+    double average = overall_sum / (NUMBER * 5);
+
+    printf("Average Wait Time: %f milliseconds\n", average);
+    printf("Maximum Wait Time: %f milliseconds\n", overall_max);
 }
