@@ -6,6 +6,7 @@
 #include <semaphore.h>  
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 // the number of philosophers
 #define NUMBER 		5
@@ -57,3 +58,7 @@ void return_chopsticks(int number);
 
 // Added for part 2
 pthread_mutex_t mutex_middle; // Middle chopstick mutex
+
+struct timeval time_before[NUMBER], time_after[NUMBER];
+double waitTime[NUMBER];
+

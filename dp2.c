@@ -2,6 +2,7 @@
 #include <stdio.h> // for debuging
 #include <ctype.h>
 #include <stdbool.h>
+#include <sys/time.h>
 
 //function for getting a random number from the list
 int get_next_number() {
@@ -64,6 +65,7 @@ void test(int number) {
     }
 
     if (eat && state[number] == HUNGRY) {
+        gettimeofday(&time_after[number], NULL); // Time recorded when philosopher starts eating
         state[number] = EATING;
         sem_post(&sem_vars[number]); // wake up phi[i] if it is blocked
     }
@@ -86,6 +88,10 @@ void test(int number) {
 void eat(int number) {
     int eating_time = get_next_number();
     printf("%d: eating for %d seconds\n", number, eating_time);
+    waitTime[number] = 
+    (double)(time_after[number].tv_usec - time_before[number].tv_usec) / 1000 +
+    (double)(time_after[number].tv_sec - time_before[number].tv_sec) * 1000;
+    printf("%d: waited for %f milliseconds\n", number, waitTime[number]);
     sleep(eating_time);
 }
 
