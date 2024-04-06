@@ -38,6 +38,7 @@ void think(int number) {
 void pickup_chopsticks(int number) {
     printf("%d: pickup chopsticks\n", number);
     pthread_mutex_lock(&mutex_lock);
+    gettimeofday(&time_before[number], NULL); // Time recorded when philosopher gets hungry
     state[number] = HUNGRY;
     printf("%d: hungry\n", number);
     test(number);
