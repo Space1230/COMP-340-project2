@@ -63,8 +63,8 @@ void eat(int number) {
     waitTime[number] = 
     (double)(time_after[number].tv_usec - time_before[number].tv_usec) / 1000 +
     (double)(time_after[number].tv_sec - time_before[number].tv_sec) * 1000;
-    sum[number] += waitTime;
-    if (waitTime > max[number]) {
+    sum[number] += waitTime[number];
+    if (waitTime[number] > max[number]) {
         max[number] = waitTime;
     }
     printf("%d: waited for %f milliseconds\n", number, waitTime[number]);
