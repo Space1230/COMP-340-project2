@@ -16,7 +16,7 @@ int get_next_number() {
 //function that simulates the philosopher operation
 void *philosopher(void *param) {
     int philosopher_number = *(int*)param;
-    while (1) {
+    for (int i = 0; i < 5; i++) {
         think(philosopher_number);
         pickup_chopsticks(philosopher_number);
         eat(philosopher_number);
